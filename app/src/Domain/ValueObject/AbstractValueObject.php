@@ -6,10 +6,14 @@ namespace App\Domain\ValueObject;
 
 abstract class AbstractValueObject
 {
-    public function __construct(protected mixed $value)
-    {}
+    protected $value;
 
-    public function getValue(): mixed
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    public function getValue()
     {
         return $this->value;
     }

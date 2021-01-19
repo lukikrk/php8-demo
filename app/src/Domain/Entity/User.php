@@ -8,14 +8,33 @@ use Ramsey\Uuid\UuidInterface;
 
 class User
 {
+    private UuidInterface $id;
+
+    private string $firstName;
+
+    private string $lastName;
+
+    private $height;
+
+    private $weight;
+
+    private ?Address $address;
+
     public function __construct(
-        private UuidInterface $id,
-        private string $firstName,
-        private string $lastName,
-        private int|float $height,
-        private int|float $weight,
-        private ?Address $address = null
-    ) {}
+        UuidInterface $id,
+        string $firstName,
+        string $lastName,
+        $height,
+        $weight,
+        ?Address $address = null
+    ) {
+        $this->id = $id;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->height = $height;
+        $this->weight = $weight;
+        $this->address = $address;
+    }
 
     public function update(string $firstName, string $lastName, float $height, float $weight, Address $address): void
     {
@@ -41,12 +60,12 @@ class User
         return $this->lastName;
     }
 
-    public function getHeight(): float|int
+    public function getHeight()
     {
         return $this->height;
     }
 
-    public function getWeight(): float|int
+    public function getWeight()
     {
         return $this->weight;
     }

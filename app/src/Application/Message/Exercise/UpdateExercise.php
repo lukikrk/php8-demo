@@ -6,12 +6,25 @@ namespace App\Application\Message\Exercise;
 
 class UpdateExercise
 {
+    private string $id;
+
+    private string $name;
+
+    private string $description;
+
+    private ?string $expertOpinion;
+
     public function __construct(
-        private string $id,
-        private string $name,
-        private string $description,
-        private ?string $expertOpinion = null
-    ) {}
+        string $id,
+        string $name,
+        string $description,
+        ?string $expertOpinion = null
+    ) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->description = $description;
+        $this->expertOpinion = $expertOpinion;
+    }
 
     public function getId(): string
     {

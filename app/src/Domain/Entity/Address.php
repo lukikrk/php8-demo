@@ -6,12 +6,21 @@ namespace App\Domain\Entity;
 
 class Address
 {
-    public function __construct(
-        private string $street,
-        private string $zip,
-        private string $city,
-        private ?string $country,
-    ) {}
+    private string $street;
+
+    private string $zip;
+
+    private string $city;
+
+    private ?string $country;
+
+    public function __construct(string $street, string $zip, string $city, ?string $country)
+    {
+        $this->street = $street;
+        $this->zip = $zip;
+        $this->city = $city;
+        $this->country = $country;
+    }
 
     public function update(string $street, string $zip, string $city, ?string $country): void
     {

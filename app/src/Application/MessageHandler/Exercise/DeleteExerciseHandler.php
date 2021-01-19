@@ -9,8 +9,12 @@ use App\Application\Repository\ExerciseRepositoryInterface;
 
 class DeleteExerciseHandler
 {
-    public function __construct(private ExerciseRepositoryInterface $exerciseRepository)
-    {}
+    private ExerciseRepositoryInterface $exerciseRepository;
+
+    public function __construct(ExerciseRepositoryInterface $exerciseRepository)
+    {
+        $this->exerciseRepository = $exerciseRepository;
+    }
 
     public function __invoke(DeleteExercise $deleteExercise): void
     {

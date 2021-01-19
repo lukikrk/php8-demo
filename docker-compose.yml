@@ -1,27 +1,27 @@
 version: "3"
 
 services:
-  nginx:
+  nginx_php_7:
     build: ./docker/nginx
-    container_name: php_8_demo_nginx
+    container_name: php_8_demo_nginx_php_7
     ports:
       - 127.0.0.102:80:80
     volumes:
       - ./app:/opt/app
     depends_on:
-      - php
+      - php_7
 
-  php:
+  php_7:
     build: ./docker/php
-    container_name: php_8_demo_php
+    container_name: php_8_demo_php_7
     volumes:
       - ./app:/opt/app
     depends_on:
-      - mysql
+      - mysql_php_7
 
-  mysql:
+  mysql_php_7:
     image: mysql:5.7
-    container_name: php_8_demo_mysql
+    container_name: php_8_demo_mysql_php_7
     restart: on-failure
     environment:
       MYSQL_ROOT_PASSWORD: test

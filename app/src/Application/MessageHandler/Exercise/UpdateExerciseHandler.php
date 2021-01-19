@@ -11,8 +11,12 @@ use App\Domain\ValueObject\Exercise\ExerciseName;
 
 class UpdateExerciseHandler
 {
-    public function __construct(private ExerciseRepositoryInterface $exerciseRepository)
-    {}
+    private ExerciseRepositoryInterface $exerciseRepository;
+
+    public function __construct(ExerciseRepositoryInterface $exerciseRepository)
+    {
+        $this->exerciseRepository = $exerciseRepository;
+    }
 
     public function __invoke(UpdateExercise $updateExercise): Exercise
     {

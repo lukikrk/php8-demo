@@ -15,13 +15,27 @@ class GenerateBMIReportCommand extends Command
 {
     protected static $defaultName = 'app:bmi:report';
 
+    private string $projectDir;
+
+    private UserRepository $userRepository;
+
+    private BMICalculator $bmiCalculator;
+
+    private BMIStatusResolver $bmiStatusResolver;
+
     public function __construct(
-        private string $projectDir,
-        private UserRepository $userRepository,
-        private BMICalculator $bmiCalculator,
-        private BMIStatusResolver $bmiStatusResolver,
+        string $projectDir,
+        UserRepository $userRepository,
+        BMICalculator $bmiCalculator,
+        BMIStatusResolver $bmiStatusResolver,
         string $name = null
     ) {
+
+        $this->projectDir = $projectDir;
+        $this->userRepository = $userRepository;
+        $this->bmiCalculator = $bmiCalculator;
+        $this->bmiStatusResolver = $bmiStatusResolver;
+
         parent::__construct($name);
     }
 
@@ -42,7 +56,7 @@ class GenerateBMIReportCommand extends Command
                 $user->getLastName(),
                 $user->getWeight(),
                 $user->getHeight(),
-                $bmi = $this->bmiCalculator->calculate($user->getWeight(), $user->getHeight()),
+                $bmi = $this->bmiCalculator->calculate((float) $user->getWeight(), (float)$user->getHeight()),
                 $this->bmiStatusResolver->resolve($bmi)
             ]);
         }
@@ -51,7 +65,7 @@ class GenerateBMIReportCommand extends Command
 
         $end = microtime(true);
 
-        $output->writeln("Operation took " . $end - $start . " seconds");
+        $output->writeln("Operation took " . ($end - $start) . " seconds");
 
         return 0;
     }

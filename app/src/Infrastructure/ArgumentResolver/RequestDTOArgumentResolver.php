@@ -14,8 +14,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RequestDTOArgumentResolver implements ArgumentValueResolverInterface
 {
-    public function __construct(private ValidatorInterface $validator)
-    {}
+    private ValidatorInterface $validator;
+
+    public function __construct(ValidatorInterface $validator)
+    {
+        $this->validator = $validator;
+    }
 
     public function resolve(Request $request, ArgumentMetadata $argument)
     {

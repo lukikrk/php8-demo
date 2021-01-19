@@ -11,8 +11,12 @@ use App\Domain\Entity\User;
 
 class UpdateUserHandler
 {
-    public function __construct(private UserRepositoryInterface $userRepository)
-    {}
+    private UserRepositoryInterface $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
     public function __invoke(UpdateUser $updateUser): User
     {

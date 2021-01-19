@@ -6,17 +6,45 @@ namespace App\Application\Message\User;
 
 class CreateUser
 {
+    private string $id;
+
+    private string $firstName;
+
+    private string $lastName;
+
+    private float $height;
+
+    private float $weight;
+
+    private string $street;
+
+    private string $zip;
+
+    private string $city;
+
+    private ?string $country;
+
     public function __construct(
-        private string $id,
-        private string $firstName,
-        private string $lastName,
-        private float $height,
-        private float $weight,
-        private string $street,
-        private string $zip,
-        private string $city,
-        private ?string $country
-    ) {}
+        string $id,
+        string $firstName,
+        string $lastName,
+        float $height,
+        float $weight,
+        string $street,
+        string $zip,
+        string $city,
+        ?string $country
+    ) {
+        $this->id = $id;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->height = $height;
+        $this->weight = $weight;
+        $this->street = $street;
+        $this->zip = $zip;
+        $this->city = $city;
+        $this->country = $country;
+    }
 
     public function getId(): string
     {

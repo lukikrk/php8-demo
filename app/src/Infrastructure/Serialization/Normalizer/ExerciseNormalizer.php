@@ -22,12 +22,22 @@ class ExerciseNormalizer implements NormalizerInterface, NormalizationAwareInter
      */
     public function normalize($object, string $format = null, array $context = []): array
     {
+        $country = null;
+
+        if ($user = $object->getUser()) {
+            if ($address = $user->getAddress()) {
+                if ($address->getCountry()) {
+                    $country = $address->getCountry();
+                }
+            }
+        }
+
         return [
             'id' => $object->getId()->toString(),
             'name' => $object->getName()->getValue(),
             'description' => $object->getDescription(),
             'expertOpinion' => $object->getExpertOpinion(),
-            'country' => $object?->getUser()?->getAddress()?->getCountry()
+            'country' => $country
         ];
     }
 

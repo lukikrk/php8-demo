@@ -13,11 +13,18 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 abstract class AbstractBaseController
 {
-    public function __construct(protected MessageBusInterface $messageBus, private SerializerInterface $serializer)
-    {}
+    protected MessageBusInterface $messageBus;
+
+    private SerializerInterface $serializer;
+
+    public function __construct(MessageBusInterface $messageBus, SerializerInterface $serializer)
+    {
+        $this->messageBus = $messageBus;
+        $this->serializer = $serializer;
+    }
 
     protected function jsonResponse(
-        mixed $data = null,
+        $data = null,
         int $statusCode = Response::HTTP_OK,
         array $serializationContext = [],
         array $headers = []

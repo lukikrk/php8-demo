@@ -13,10 +13,17 @@ use Ramsey\Uuid\Uuid;
 
 class CreateExerciseHandler
 {
+    private ExerciseRepositoryInterface $exerciseRepository;
+
+    private UserRepositoryInterface $userRepository;
+
     public function __construct(
-        private ExerciseRepositoryInterface $exerciseRepository,
-        private UserRepositoryInterface $userRepository
-    ) {}
+        ExerciseRepositoryInterface $exerciseRepository,
+        UserRepositoryInterface $userRepository
+    ) {
+        $this->exerciseRepository = $exerciseRepository;
+        $this->userRepository = $userRepository;
+    }
 
     public function __invoke(CreateExercise $createExercise): Exercise
     {

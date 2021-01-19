@@ -9,8 +9,12 @@ use App\Application\Repository\UserRepositoryInterface;
 
 class DeleteUserHandler
 {
-    public function __construct(private UserRepositoryInterface $userRepository)
-    {}
+    private UserRepositoryInterface $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
     public function __invoke(DeleteUser $deleteUser): void
     {

@@ -16,8 +16,12 @@ class InsertExerciseCommand extends Command
 {
     protected static $defaultName = 'app:insert:exercise';
 
-    public function __construct(private EntityManagerInterface $em, string $name = null)
+    private EntityManagerInterface $em;
+
+    public function __construct(EntityManagerInterface $em, string $name = null)
     {
+        $this->em = $em;
+
         parent::__construct($name);
     }
 
@@ -27,7 +31,8 @@ class InsertExerciseCommand extends Command
             Uuid::uuid4(),
             new ExerciseName('Test exercise'),
             'Description',
-            expertOpinion: 'Opinion'
+            null,
+            'Opinion'
         );
 
         $this->em->persist($exercise);

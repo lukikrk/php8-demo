@@ -8,45 +8,52 @@ use App\Application\Message\Exercise\CreateExercise;
 use App\Application\Message\Exercise\DeleteExercise;
 use App\Application\Message\Exercise\UpdateExercise;
 use App\Application\Repository\ExerciseRepositoryInterface;
+use App\Domain\Entity\Exercise;
 use App\Infrastructure\DTO\Exercise\CreateExerciseRequest;
 use App\Infrastructure\DTO\Exercise\UpdateExerciseRequest;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route("/exercises")]
+/**
+ * @Route("/exercises")
+ */
 class ExerciseController extends AbstractBaseController
 {
+    private ExerciseRepositoryInterface $exerciseRepository;
+
     public function __construct(
-        private ExerciseRepositoryInterface $exerciseRepository,
+        ExerciseRepositoryInterface $exerciseRepository,
         MessageBusInterface $messageBus,
         SerializerInterface $serializer
     ) {
+        $this->exerciseRepository = $exerciseRepository;
+
         parent::__construct($messageBus, $serializer);
     }
 
-    #[Route(methods: ["GET"])]
+
+    /**
+     * @Route(methods={"GET"})
+     */
     public function list(): Response
     {
         return $this->jsonResponse($this->exerciseRepository->findAllExercises());
     }
 
-    #[Route("/{id}", methods: ["GET"])]
-    public function view(string $id): Response
+    /**
+     * @Route("/{id}", methods={"GET"})
+     */
+    public function view(Exercise $exercise): Response
     {
-        $exercise = $this->exerciseRepository->findExercise($id);
-
-        if (!$exercise) {
-            throw new NotFoundHttpException();
-        }
-
         return $this->jsonResponse($exercise);
     }
 
-    #[Route(methods: ["POST"])]
+    /**
+     * @Route(methods={"POST"})
+     */
     public function create(CreateExerciseRequest $request): Response
     {
         $createExercise = new CreateExercise(
@@ -61,31 +68,31 @@ class ExerciseController extends AbstractBaseController
         return $this->responseFromEnvelope($envelope, Response::HTTP_CREATED);
     }
 
-    #[Route("/{id}", methods: ["PUT"])]
-    public function update(UpdateExerciseRequest $request, string $id): Response
+    /**
+     * @Route("/{id}", methods={"PUT"})
+     */
+    public function update(UpdateExerciseRequest $request, Exercise $exercise): Response
     {
-        if (!$this->exerciseRepository->findExercise($id)) {
-            throw new NotFoundHttpException();
-        }
-
-        $updateExercise = new UpdateExercise($id, $request->getName(), $request->getDescription());
+        $updateExercise = new UpdateExercise(
+            $exercise->getId()->toString(),
+            $request->getName(),
+            $request->getDescription()
+        );
 
         $envelope = $this->messageBus->dispatch($updateExercise);
 
         return $this->responseFromEnvelope($envelope);
     }
 
-    #[Route("/{id}", methods: ["DELETE"])]
-    public function delete(string $id): Response
+    /**
+     * @Route("/{id}", methods={"DELETE"})
+     */
+    public function delete(Exercise $exercise): Response
     {
-        if (!$this->exerciseRepository->findExercise($id)) {
-            throw new NotFoundHttpException();
-        }
-
-        $deleteExercise = new DeleteExercise($id);
+        $deleteExercise = new DeleteExercise($exercise->getId()->toString());
 
         $this->messageBus->dispatch($deleteExercise);
 
-        return new Response(status: Response::HTTP_NO_CONTENT);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 }

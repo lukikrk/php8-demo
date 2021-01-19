@@ -8,43 +8,54 @@ use App\Application\Message\User\CreateUser;
 use App\Application\Message\User\DeleteUser;
 use App\Application\Message\User\UpdateUser;
 use App\Application\Repository\UserRepositoryInterface;
+use App\Domain\Entity\Exercise;
+use App\Domain\Entity\User;
 use App\Infrastructure\DTO\User\CreateUserRequest;
 use App\Infrastructure\DTO\User\UpdateUserRequest;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route("/users")]
+
+/**
+ * @Route("/users")
+ */
 class UserController extends AbstractBaseController
 {
+    private UserRepositoryInterface $userRepository;
+
     public function __construct(
-        private UserRepositoryInterface $userRepository,
+        UserRepositoryInterface $userRepository,
         MessageBusInterface $messageBus,
         SerializerInterface $serializer
     ) {
+        $this->userRepository = $userRepository;
+
         parent::__construct($messageBus, $serializer);
     }
 
-    #[Route(methods: ["GET"])]
+
+    /**
+     * @Route(methods={"GET"})
+     */
     public function list(): Response
     {
         return $this->jsonResponse($this->userRepository->findAllUsers());
     }
 
-    #[Route("/{id}", methods: ["GET"])]
-    public function view(string $id): Response
+    /**
+     * @Route("/{id}", methods={"GET"})
+     */
+    public function view(User $user): Response
     {
-        if (!$this->userRepository->findUser($id)) {
-            throw new NotFoundHttpException();
-        }
-
-        return $this->jsonResponse($this->userRepository->findUser($id));
+        return $this->jsonResponse($user);
     }
 
-    #[Route(methods: ["POST"])]
+    /**
+     * @Route(methods={"POST"})
+     */
     public function create(CreateUserRequest $request): Response
     {
         $createUser = new CreateUser(
@@ -64,15 +75,13 @@ class UserController extends AbstractBaseController
         return $this->responseFromEnvelope($envelope, Response::HTTP_CREATED);
     }
 
-    #[Route("/{id}", methods: ["PUT"])]
-    public function update(UpdateUserRequest $request, string $id): Response
+    /**
+     * @Route("/{id}", methods={"PUT"})
+     */
+    public function update(UpdateUserRequest $request, Exercise $exercise): Response
     {
-        if (!$this->userRepository->findUser($id)) {
-            throw new NotFoundHttpException();
-        }
-
         $updateUser = new UpdateUser(
-            $id,
+            $exercise->getId()->toString(),
             $request->getFirstName(),
             $request->getLastName(),
             $request->getHeight(),
@@ -88,17 +97,15 @@ class UserController extends AbstractBaseController
         return $this->responseFromEnvelope($envelope);
     }
 
-    #[Route("/{id}", methods: ["DELETE"])]
-    public function delete(string $id): Response
+    /**
+     * @Route("/{id}", methods={"DELETE"})
+     */
+    public function delete(Exercise $exercise): Response
     {
-        if (!$this->userRepository->findUser($id)) {
-            throw new NotFoundHttpException();
-        }
-
-        $deleteUser = new DeleteUser($id);
+        $deleteUser = new DeleteUser($exercise->getId()->toString());
 
         $this->messageBus->dispatch($deleteUser);
 
-        return new Response(status: Response::HTTP_NO_CONTENT);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 }

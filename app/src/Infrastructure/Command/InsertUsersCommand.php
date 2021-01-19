@@ -15,8 +15,12 @@ class InsertUsersCommand extends Command
 {
     protected static $defaultName = 'app:insert:users';
 
-    public function __construct(private EntityManagerInterface $em, string $name = null)
+    private EntityManagerInterface $em;
+
+    public function __construct(EntityManagerInterface $em, string $name = null)
     {
+        $this->em = $em;
+
         parent::__construct($name);
     }
 
