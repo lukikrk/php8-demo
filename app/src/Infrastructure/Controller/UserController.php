@@ -8,7 +8,6 @@ use App\Application\Message\User\CreateUser;
 use App\Application\Message\User\DeleteUser;
 use App\Application\Message\User\UpdateUser;
 use App\Application\Repository\UserRepositoryInterface;
-use App\Domain\Entity\Exercise;
 use App\Domain\Entity\User;
 use App\Infrastructure\DTO\User\CreateUserRequest;
 use App\Infrastructure\DTO\User\UpdateUserRequest;
@@ -78,10 +77,10 @@ class UserController extends AbstractBaseController
     /**
      * @Route("/{id}", methods={"PUT"})
      */
-    public function update(UpdateUserRequest $request, Exercise $exercise): Response
+    public function update(UpdateUserRequest $request, User $user): Response
     {
         $updateUser = new UpdateUser(
-            $exercise->getId()->toString(),
+            $user->getId()->toString(),
             $request->getFirstName(),
             $request->getLastName(),
             $request->getHeight(),
@@ -100,9 +99,9 @@ class UserController extends AbstractBaseController
     /**
      * @Route("/{id}", methods={"DELETE"})
      */
-    public function delete(Exercise $exercise): Response
+    public function delete(User $user): Response
     {
-        $deleteUser = new DeleteUser($exercise->getId()->toString());
+        $deleteUser = new DeleteUser($user->getId()->toString());
 
         $this->messageBus->dispatch($deleteUser);
 
