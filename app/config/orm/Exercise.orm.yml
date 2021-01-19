@@ -1,0 +1,21 @@
+App\Domain\Entity\Exercise:
+  type: entity
+  repositoryClass: App\Infrastructure\Repository\ExerciseRepository
+  table: exercises
+  id:
+    id:
+      type: uuid
+  fields:
+    name:
+      type: exerciseName
+    description:
+      type: string
+    expertOpinion:
+      type: string
+      nullable: true
+  manyToOne:
+    user:
+      targetEntity: User
+      joinColumn:
+        name: user_id
+        referencedColumnName: id

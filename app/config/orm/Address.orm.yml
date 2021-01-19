@@ -1,0 +1,12 @@
+App\Domain\Entity\Address:
+  type: embeddable
+  fields:
+    street:
+      type: string
+    zip:
+      type: string
+    city:
+      type: string
+    country:
+      type: string
+      nullable: true

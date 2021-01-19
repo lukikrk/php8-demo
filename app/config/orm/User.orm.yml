@@ -1,0 +1,23 @@
+App\Domain\Entity\User:
+  type: entity
+  repositoryClass: App\Infrastructure\Repository\UserRepository
+  table: users
+  id:
+    id:
+      type: uuid
+  fields:
+    firstName:
+      type: string
+    lastName:
+      type: string
+    height:
+      type: decimal
+      precision: 10
+      scale: 2
+    weight:
+      type: decimal
+      precision: 10
+      scale: 2
+  embedded:
+    address:
+      class: App\Domain\Entity\Address
