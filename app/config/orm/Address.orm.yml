@@ -3,10 +3,13 @@ App\Domain\Entity\Address:
   fields:
     street:
       type: string
+      nullable: true
     zip:
       type: string
+      nullable: true
     city:
       type: string
+      nullable: true
     country:
       type: string
       nullable: true
