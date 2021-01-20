@@ -65,6 +65,8 @@ RUN install-php-extensions \
   xsl \
   zip
 
+COPY ./ini/conf.d/ /usr/local/etc/php/conf.d
+
 # INSTALL COMPOSER
 ENV COMPOSER_HOME /usr/local/composer
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
