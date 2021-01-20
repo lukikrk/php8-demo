@@ -11,11 +11,15 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UpdateExerciseRequest implements RequestDTOInterface
 {
-    #[NotBlank]
-    #[Length(min: 3, max: 255)]
+    /**
+     * @NotBlank()
+     * @Length(min=3, max=255)
+     */
     private ?string $name;
 
-    #[NotBlank]
+    /**
+     * @NotBlank()
+     */
     private ?string $description;
 
     public function __construct(Request $request)

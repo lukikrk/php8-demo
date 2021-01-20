@@ -11,27 +11,41 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CreateUserRequest implements RequestDTOInterface
 {
-    #[NotBlank]
-    #[Length(min: 3, max: 255)]
+    /**
+     * @NotBlank()
+     * @Length(min=3, max=255)
+     */
     private ?string $firstName;
 
-    #[NotBlank]
-    #[Length(min: 3, max: 255)]
+    /**
+     * @NotBlank()
+     * @Length(min=3, max=255)
+     */
     private ?string $lastName;
 
-    #[NotBlank]
+    /**
+     * @NotBlank()
+     */
     private ?float $height;
 
-    #[NotBlank]
+    /**
+     * @NotBlank()
+     */
     private ?float $weight;
 
-    #[NotBlank]
+    /**
+     * @NotBlank()
+     */
     private ?string $street;
 
-    #[NotBlank]
+    /**
+     * @NotBlank()
+     */
     private ?string $zip;
 
-    #[NotBlank]
+    /**
+     * @NotBlank()
+     */
     private ?string $city;
 
     private ?string $country;
