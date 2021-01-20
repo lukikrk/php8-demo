@@ -26,7 +26,7 @@ class InsertUsersCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        for ($i = 0; $i < 100000; $i++) {
+        for ($i = 0; $i < 1000000; $i++) {
             $user = new User(
                 Uuid::uuid4(),
                 'John',
